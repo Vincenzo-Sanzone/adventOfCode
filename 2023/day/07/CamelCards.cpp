@@ -56,8 +56,8 @@ ll getPointsOfARank(vector<pair<string, ll>> &bestHands, ll &numberOfHands) {
 }
 
 void radixSort(vector<pair<string, ll>> &toOrder) {
-	vector<char> cards{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5',
-	                   '4', '3', '2'};
+	vector<char> cards{'A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4',
+	                   '3', '2', 'J'};
 	int maxLen = toOrder[0].first.size();
 	for (int i = maxLen - 1; i >= 0; i--) {
 		vector<pair<string, ll>> ordered;
@@ -78,19 +78,25 @@ void radixSort(vector<pair<string, ll>> &toOrder) {
 }
 
 short getRank(string hand) {
-	vector<char> cards{'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J',
+	vector<char> cards{'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T',
 	                   'Q', 'K', 'A'};
 	vector<short> occurrences(13, 0);
 	bool pair, tris, poker, doublePair;
 	for (int i = 0; i < hand.size(); i++) {
 		int posValue = find(cards.begin(), cards.end(), hand[i]) - cards.begin();
 		occurrences[posValue]++;
+		if(posValue == 0) continue;
 		if (occurrences[posValue] == 5) return 6;
 		if (occurrences[posValue] == 4) poker = true;
 		if (occurrences[posValue] == 3) tris = true;
 		if (occurrences[posValue] == 2 && pair) doublePair = true;
 		if (occurrences[posValue] == 2) pair = true;
 	}
+	if((tris && occurrences[0] == 2) || (poker && occurrences[0] == 1) || (pair && occurrences[0] == 3) || occurrences[0] == 5 || occurrences[0] == 4) return 6;
+	if((tris && occurrences[0] == 1) || (pair && occurrences[0] == 2) || occurrences[0] == 3) return 5;
+	if((doublePair && occurrences[0] == 1)) return 4;
+	if((pair && occurrences[0] == 1) || occurrences[0] == 2) return 3;
+	if(occurrences[0] == 1) return 1;
 	if (poker) return 5;
 	if (doublePair && tris) return 4;
 	if (tris) return 3;
