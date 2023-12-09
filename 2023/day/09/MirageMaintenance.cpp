@@ -31,7 +31,7 @@ ll getValueFromHistory(vector<ll> history) {
 		if (newHistory[i - 1] != 0) allZero = false;
 	}
 	if (allZero) return history[history.size() - 1];
-	return history[history.size() - 1] + getValueFromHistory(newHistory);
+	return history[0] - getValueFromHistory(newHistory);
 }
 
 void convertLine(string line, vector<ll> &history) {
