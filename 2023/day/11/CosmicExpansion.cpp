@@ -12,31 +12,31 @@ ll shortestPath(ll actualPosition, vector<pll> galaxies);
 
 int main() {
 	string line;
-	vector<string> map;
+	ll size = 0;
 	vector<pll> galaxies;
 	cin >> line;
 	vector<bool> hasGalaxy(line.size(), false);
 	while (line != "STOP") {
-		map.push_back(line);
 		bool found = false;
 		for (ll i = 0; i < line.size(); i++) {
 			if (line[i] == '#') {
 				hasGalaxy[i] = true;
 				found = true;
-				pll position = make_pair(map.size() - 1, i);
+				pll position = make_pair(size, i);
 				galaxies.push_back(position);
 			}
 		}
 		if (!found) {
-			map.push_back(line);
+			size += 999999;
 		}
+		size++;
 		cin >> line;
 	}
 
-	for(ll i = 0; i < galaxies.size(); i++) {
-		for(ll j = galaxies[i].second - 1; j < hasGalaxy.size(); j--) {
-			if(!hasGalaxy[j]) {
-				galaxies[i].second++;
+	for (ll i = 0; i < galaxies.size(); i++) {
+		for (ll j = galaxies[i].second - 1; j < hasGalaxy.size(); j--) {
+			if (!hasGalaxy[j]) {
+				galaxies[i].second += 999999;
 			}
 		}
 	}
