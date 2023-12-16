@@ -18,8 +18,25 @@ int main() {
 	while (cin >> line && line != "STOP") {
 		map.push_back(line);
 	}
-	vector<vector<vector<bool>>> memo(map.size(), vector<vector<bool>>(map[0].size(), vector<bool>(4, false)));
-	cout << energize(map, memo, 0, 0, 0) << endl;
+	ll result = 0;
+	for (int i = 0; i < map.size(); i++) {
+		vector<vector<vector<bool>>> memo(map.size(), vector<vector<bool>>(map[0].size(), vector<bool>(4, false)));
+		ll actual = energize(map, memo, i, 0, 0);
+		result = max(result, actual);
+		memo = vector<vector<vector<bool>>>(map.size(), vector<vector<bool>>(map[0].size(), vector<bool>(4, false)));
+		actual = energize(map, memo, i, map[0].size() - 1, 2);
+		result = max(result, actual);
+	}
+	for (int i = 0; i < map[0].size(); i++) {
+		vector<vector<vector<bool>>> memo(map.size(), vector<vector<bool>>(map[0].size(), vector<bool>(4, false)));
+		ll actual = energize(map, memo, 0, i, 1);
+		result = max(result, actual);
+		memo = vector<vector<vector<bool>>>(map.size(), vector<vector<bool>>(map[0].size(), vector<bool>(4, false)));
+		actual = energize(map, memo, map.size() - 1, i, 3);
+		result = max(result, actual);
+	}
+
+	cout << result << endl;
 }
 
 
